@@ -1,4 +1,4 @@
-import { Product, Collection, Banner, SiteSettings } from "@/data/types";
+import { Product, Collection, Banner, SiteSettings, Partner } from "@/data/types";
 import { PRODUCTS as FALLBACK_PRODUCTS, PRODUCT_MAP } from "@/data/products";
 import { COLLECTIONS as FALLBACK_COLLECTIONS } from "@/data/collections";
 
@@ -213,6 +213,23 @@ export async function getBanners(): Promise<Banner[]> {
 export async function getSettings(): Promise<SiteSettings> {
   const data = await apiGet<SiteSettings>(`/settings`);
   return data || DEFAULT_SETTINGS;
+}
+
+// Verify the partner passcode; returns the gated content or null if rejected.
+export async function verifyPartnerAccess(code: string): Promise<Partner | null> {
+  try {
+    const res = await fetch(`${API_BASE}/partner/access`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { ok: boolean; partner: Partner };
+    return data.partner;
+  } catch {
+    return null;
+  }
 }
 
 /* ---------------- defaults (used when API is unreachable) ---------------- */

@@ -84,6 +84,22 @@ export interface HomeSection {
   href?: string;
 }
 
+export interface PartnerProcessStep {
+  title: string;
+  description: string;
+  image: string;
+}
+
+export interface Partner {
+  enabled?: boolean;
+  accessCode?: string;
+  hero: { title: string; subtitle: string; image: string };
+  intro: string;
+  process: PartnerProcessStep[];
+  gallery: string[];
+  video: { url: string; caption: string };
+}
+
 export interface SiteSettings {
   brand: { name: string; logoUrl: string };
   announcementMessages: string[];
