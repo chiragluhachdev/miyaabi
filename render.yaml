@@ -1,0 +1,48 @@
+# Render Blueprint — deploys the two apps in this monorepo as separate services.
+# In Render: New + → Blueprint → pick this repo. Then set the secret env vars
+# (marked sync:false) in each service's Environment tab.
+services:
+  # ---------------- Backend API (Express) ----------------
+  - type: web
+    name: miyaabi-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        sync: false # set to your deployed frontend URL, e.g. https://miyaabi-frontend.onrender.com
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+  # ---------------- Frontend (Next.js) ----------------
+  - type: web
+    name: miyaabi-frontend
+    runtime: node
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # IMPORTANT: Next.js inlines this at BUILD time. Set it before deploying,
+      # to your deployed backend URL + /api, e.g. https://miyaabi-backend.onrender.com/api
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
