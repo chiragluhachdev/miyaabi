@@ -2,8 +2,10 @@ import { Product, Collection, Banner, SiteSettings } from "@/data/types";
 import { PRODUCTS as FALLBACK_PRODUCTS, PRODUCT_MAP } from "@/data/products";
 import { COLLECTIONS as FALLBACK_COLLECTIONS } from "@/data/collections";
 
+// Backend serves routes at the root (and also under /api), so the base URL can be
+// the bare service URL, e.g. https://miyaabi.onrender.com
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5007/api";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5007";
 
 /* ---------------- normalizers (backend shape -> storefront shape) ---------------- */
 
