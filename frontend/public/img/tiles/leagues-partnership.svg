@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Leagues &amp; Partnership">
+  <defs><linearGradient id="t1971191077" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#36a9e1"/><stop offset="1" stop-color="#0f1b3d"/>
+  </linearGradient></defs>
+  <rect width="600" height="600" fill="url(#t1971191077)"/>
+  <g opacity="0.14" stroke="#fff" stroke-width="2">
+    <circle cx="300" cy="300" r="60" fill="none"/><circle cx="300" cy="300" r="105" fill="none"/><circle cx="300" cy="300" r="150" fill="none"/><circle cx="300" cy="300" r="195" fill="none"/><circle cx="300" cy="300" r="240" fill="none"/><circle cx="300" cy="300" r="285" fill="none"/><circle cx="300" cy="300" r="330" fill="none"/>
+  </g>
+  <rect x="0" y="500" width="600" height="100" fill="rgba(225,27,34,0.92)"/>
+  <text x="30" y="565" font-family="Public Sans, Arial, sans-serif" font-size="34" font-weight="800" fill="#fff" letter-spacing="1">LEAGUES &amp; PARTNERSHIP</text>
+</svg>

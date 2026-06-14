@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 720" width="600" height="720" role="img" aria-label="Official Training Jersey Half Sleeve Coral">
+  <defs>
+    <linearGradient id="g2071786423" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16181d"/>
+      <stop offset="1" stop-color="#e11b22"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="720" fill="#f2f2f0"/>
+  <g transform="translate(300,300)">
+    <path transform="translate(-150,-150)" d="M95 30 L40 70 L10 150 L60 185 L70 150 L70 330 L230 330 L230 150 L240 185 L290 150 L260 70 L205 30 C190 60 110 60 95 30 Z"
+      fill="url(#g2071786423)" stroke="rgba(0,0,0,0.12)" stroke-width="3"/>
+    <circle cx="0" cy="40" r="36" fill="rgba(255,255,255,0.9)"/>
+    <text x="0" y="52" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-style="italic" font-size="34" font-weight="900" fill="#16181d">mi</text>
+  </g>
+  <rect x="40" y="620" width="30" height="8" rx="4" fill="#16181d" opacity="0.5"/>
+  <text x="40" y="676" font-family="Public Sans, Arial, sans-serif" font-size="26" font-weight="700" fill="#16181d">Official Training Jersey Half Sleeve Coral</text>
+  <text x="40" y="706" font-family="Public Sans, Arial, sans-serif" font-size="18" fill="#7a7f87">View 1 · miyaabi</text>
+</svg>
