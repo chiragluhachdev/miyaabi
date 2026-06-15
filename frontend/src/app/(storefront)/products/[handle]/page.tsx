@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductDetail from "@/components/ProductDetail";
 import ProductCarousel from "@/components/ProductCarousel";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import { getProduct, getRelatedProducts } from "@/lib/api";
 
 export async function generateMetadata({
@@ -46,6 +47,8 @@ export default async function ProductPage({
       {related.length > 0 && (
         <ProductCarousel title="You may also like" products={related} />
       )}
+
+      <RecentlyViewed current={product.handle} />
     </>
   );
 }

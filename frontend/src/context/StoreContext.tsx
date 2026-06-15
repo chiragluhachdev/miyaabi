@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
   ReactNode,
 } from "react";
 
@@ -18,6 +19,9 @@ export interface CartLine {
   qty: number;
 }
 
+const CART_KEY = "miyaabi_cart";
+const WISH_KEY = "miyaabi_wishlist";
+
 interface StoreState {
   cart: CartLine[];
   cartCount: number;
@@ -25,21 +29,48 @@ interface StoreState {
   cartOpen: boolean;
   menuOpen: boolean;
   searchOpen: boolean;
+  wishlist: string[];
   addToCart: (line: Omit<CartLine, "qty"> & { qty?: number }) => void;
   removeFromCart: (index: number) => void;
   updateQty: (index: number, qty: number) => void;
+  clearCart: () => void;
   setCartOpen: (v: boolean) => void;
   setMenuOpen: (v: boolean) => void;
   setSearchOpen: (v: boolean) => void;
+  toggleWishlist: (handle: string) => void;
+  inWishlist: (handle: string) => boolean;
 }
 
 const StoreContext = createContext<StoreState | null>(null);
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load persisted state on mount
+  useEffect(() => {
+    try {
+      const c = localStorage.getItem(CART_KEY);
+      if (c) setCart(JSON.parse(c));
+      const w = localStorage.getItem(WISH_KEY);
+      if (w) setWishlist(JSON.parse(w));
+    } catch {
+      /* ignore */
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist
+  useEffect(() => {
+    if (hydrated) localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }, [cart, hydrated]);
+  useEffect(() => {
+    if (hydrated) localStorage.setItem(WISH_KEY, JSON.stringify(wishlist));
+  }, [wishlist, hydrated]);
 
   const addToCart = useCallback(
     (line: Omit<CartLine, "qty"> & { qty?: number }) => {
@@ -75,6 +106,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const clearCart = useCallback(() => setCart([]), []);
+
+  const toggleWishlist = useCallback((handle: string) => {
+    setWishlist((prev) =>
+      prev.includes(handle) ? prev.filter((h) => h !== handle) : [...prev, handle]
+    );
+  }, []);
+
+  const inWishlist = useCallback(
+    (handle: string) => wishlist.includes(handle),
+    [wishlist]
+  );
+
   const cartCount = cart.reduce((n, l) => n + l.qty, 0);
   const cartTotal = cart.reduce((n, l) => n + l.qty * l.price, 0);
 
@@ -87,12 +131,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         cartOpen,
         menuOpen,
         searchOpen,
+        wishlist,
         addToCart,
         removeFromCart,
         updateQty,
+        clearCart,
         setCartOpen,
         setMenuOpen,
         setSearchOpen,
+        toggleWishlist,
+        inWishlist,
       }}
     >
       {children}

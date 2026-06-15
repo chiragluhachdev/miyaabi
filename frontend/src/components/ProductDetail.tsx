@@ -5,10 +5,11 @@ import Image from "next/image";
 import { Product } from "@/data/types";
 import { formatINR } from "@/lib/format";
 import { useStore } from "@/context/StoreContext";
-import { PlusIcon, MinusIcon, ChevronDown } from "./Icons";
+import { stockBadge, badgeClasses } from "@/lib/badges";
+import { PlusIcon, MinusIcon, ChevronDown, HeartIcon } from "./Icons";
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { addToCart } = useStore();
+  const { addToCart, toggleWishlist, inWishlist } = useStore();
   const [activeImg, setActiveImg] = useState(0);
   const [size, setSize] = useState(product.sizes[0]);
   const [color, setColor] = useState(product.colors[0]?.name ?? "Default");
@@ -16,6 +17,23 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [openAcc, setOpenAcc] = useState<string | null>("desc");
 
   const onSale = product.compareAtPrice != null;
+  const badge = stockBadge(product);
+  const buyable = product.available && !product.comingSoon;
+  const wished = inWishlist(product.handle);
+
+  const specs = [
+    product.fabric && { icon: "🧵", label: "Fabric", value: product.fabric },
+    product.gsm ? { icon: "⚖️", label: "Weight", value: `${product.gsm} GSM` } : null,
+    product.fit && { icon: "📐", label: "Fit", value: product.fit },
+    product.washCare && { icon: "🧼", label: "Wash Care", value: product.washCare },
+    product.countryOfOrigin && {
+      icon: "🇮🇳",
+      label: "Origin",
+      value: product.countryOfOrigin,
+    },
+    product.shippingTime && { icon: "🚚", label: "Shipping", value: product.shippingTime },
+    product.returnPolicy && { icon: "🔁", label: "Returns", value: product.returnPolicy },
+  ].filter(Boolean) as { icon: string; label: string; value: string }[];
 
   const add = () => {
     addToCart({
@@ -42,13 +60,11 @@ export default function ProductDetail({ product }: { product: Product }) {
             sizes="(max-width:1024px) 100vw, 50vw"
             className="object-cover"
           />
-          {product.badge && (
+          {badge && (
             <span
-              className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white ${
-                product.badge === "Sale" ? "bg-brand" : "bg-ink"
-              }`}
+              className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide ${badgeClasses[badge.tone]}`}
             >
-              {product.badge}
+              {badge.label}
             </span>
           )}
         </div>
@@ -92,6 +108,27 @@ export default function ProductDetail({ product }: { product: Product }) {
         <p className="mt-1 text-[12px] text-ink-soft">
           Inclusive of all taxes. Free shipping over {formatINR(1499)}.
         </p>
+
+        {/* Spec sheet */}
+        {specs.length > 0 && (
+          <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 rounded-xl border border-line bg-cream/60 p-4 sm:grid-cols-3">
+            {specs.map((s) => (
+              <div key={s.label} className="flex items-start gap-2">
+                <span className="text-base leading-none" aria-hidden>
+                  {s.icon}
+                </span>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wide text-ink-soft">
+                    {s.label}
+                  </p>
+                  <p className="text-[12px] font-semibold leading-snug text-ink">
+                    {s.value}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Colors */}
         {product.colors.length > 0 && (
@@ -158,16 +195,35 @@ export default function ProductDetail({ product }: { product: Product }) {
           </div>
           <button
             onClick={add}
-            disabled={!product.available}
+            disabled={!buyable}
             className="flex-1 rounded-full bg-ink py-3.5 text-[13px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand disabled:cursor-not-allowed disabled:bg-line disabled:text-ink-soft"
           >
-            {product.available ? "Add to cart" : "Sold out"}
+            {product.comingSoon
+              ? "Coming Soon"
+              : buyable
+                ? "Add to cart"
+                : "Sold out"}
+          </button>
+          <button
+            onClick={() => toggleWishlist(product.handle)}
+            aria-label="Add to wishlist"
+            className={`flex w-14 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+              wished
+                ? "border-brand text-brand"
+                : "border-line text-ink hover:border-ink"
+            }`}
+          >
+            <HeartIcon width={20} height={20} fill={wished ? "currentColor" : "none"} />
           </button>
         </div>
-        {product.available && (
-          <button className="mt-3 w-full rounded-full border-2 border-ink py-3.5 text-[13px] font-bold uppercase tracking-wide text-ink hover:bg-ink hover:text-white">
+        {buyable && (
+          <a
+            href="/checkout"
+            onClick={add}
+            className="mt-3 block w-full rounded-full border-2 border-ink py-3.5 text-center text-[13px] font-bold uppercase tracking-wide text-ink hover:bg-ink hover:text-white"
+          >
             Buy it now
-          </button>
+          </a>
         )}
 
         {/* Accordions */}
@@ -177,12 +233,12 @@ export default function ProductDetail({ product }: { product: Product }) {
             {
               id: "ship",
               title: "Shipping & Returns",
-              body: "Dispatched within 2–4 business days. Free shipping on orders over ₹1,499. Easy 7-day returns on unused items with tags intact.",
+              body: `${product.shippingTime || "Ships in 2–4 days"}. Free shipping on orders over ₹1,499. ${product.returnPolicy || "Easy 7-day return"} on unused items with tags intact. Cash on Delivery available.`,
             },
             {
               id: "care",
               title: "Material & Care",
-              body: "Premium moisture-wicking polyester blend. Machine wash cold, inside out. Do not bleach. Tumble dry low.",
+              body: `${product.fabric || "Premium cotton"}${product.gsm ? ` · ${product.gsm} GSM` : ""}${product.fit ? ` · ${product.fit}` : ""}. ${product.washCare || "Machine wash cold, inside out."} Made in ${product.countryOfOrigin || "India"}.`,
             },
           ].map((acc) => (
             <div key={acc.id} className="border-b border-line">

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { Product } from "@/data/types";
 import { formatINR } from "@/lib/format";
 import { useStore } from "@/context/StoreContext";
-import { PlusIcon } from "./Icons";
+import { stockBadge, badgeClasses } from "@/lib/badges";
+import { PlusIcon, HeartIcon } from "./Icons";
 
 export default function ProductCard({
   product,
@@ -14,12 +15,15 @@ export default function ProductCard({
   product: Product;
   className?: string;
 }) {
-  const { addToCart } = useStore();
+  const { addToCart, toggleWishlist, inWishlist } = useStore();
   const hasSecond = product.images.length > 1;
   const onSale = product.compareAtPrice != null;
+  const badge = stockBadge(product);
+  const buyable = product.available && !product.comingSoon;
+  const wished = inWishlist(product.handle);
 
   const quickAdd = () => {
-    if (!product.available) return;
+    if (!buyable) return;
     addToCart({
       handle: product.handle,
       title: product.title,
@@ -57,17 +61,33 @@ export default function ProductCard({
           )}
         </div>
 
-        {product.badge && (
+        {badge && (
           <span
-            className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white ${
-              product.badge === "Sale" ? "bg-brand" : "bg-ink"
-            }`}
+            className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${badgeClasses[badge.tone]}`}
           >
-            {product.badge}
+            {badge.label}
           </span>
         )}
 
-        {product.available && (
+        {/* Wishlist heart */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            toggleWishlist(product.handle);
+          }}
+          className={`absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm transition-colors hover:bg-white ${
+            wished ? "text-brand" : "text-ink"
+          }`}
+          aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <HeartIcon
+            width={17}
+            height={17}
+            fill={wished ? "currentColor" : "none"}
+          />
+        </button>
+
+        {buyable && (
           <button
             onClick={(e) => {
               e.preventDefault();

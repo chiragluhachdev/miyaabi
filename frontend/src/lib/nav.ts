@@ -28,7 +28,7 @@ export function buildNav(collections: Collection[]): NavItem[] {
         (c) => c.links.length
       ),
     },
-    { label: "BULK ENQUIRY", href: "/pages/bulk-enquiry" },
+    { label: "ABOUT", href: "/pages/about" },
     { label: "SALE", href: "/collections/sale", highlight: true },
   ];
 }

@@ -3,15 +3,34 @@ export interface FaqItem {
   a: string;
 }
 
+export interface ContactDetail {
+  icon: string;
+  label: string;
+  value: string;
+  href?: string;
+}
+
 export interface PageContent {
   title: string;
   intro: string;
   body?: string[];
   faqs?: FaqItem[];
   contact?: boolean;
+  details?: ContactDetail[];
 }
 
 export const PAGE_CONTENT: Record<string, PageContent> = {
+  about: {
+    title: "Our Story",
+    intro:
+      "miyaabi started with a simple frustration: great-fitting, heavyweight basics were either overpriced or impossible to find in India. So we built our own.",
+    body: [
+      "Why we created it — We were tired of thin, boxy tees that lost shape after two washes and 'premium' labels charging triple for the same fabric. miyaabi exists to put genuinely good clothing — heavyweight cotton, considered fits, honest pricing — within everyone's reach.",
+      "Our mission — To make elevated everyday essentials that feel as good on day 100 as they do on day one. No gimmicks, no inflated MRPs — just well-made pieces you'll actually live in.",
+      "Quality first — Every piece is engineered in-house from 240+ GSM bio-washed cotton, pre-shrunk and reinforced at the seams. We obsess over hand-feel, drape and durability, and we inspect every garment before it ships.",
+      "Our philosophy — Buy less, buy better. We design timeless silhouettes meant to outlast trends — made in India, built to last, and priced to be lived in.",
+    ],
+  },
   "bulk-enquiry": {
     title: "Bulk Enquiry",
     intro:
@@ -26,6 +45,12 @@ export const PAGE_CONTENT: Record<string, PageContent> = {
     title: "Contact Us",
     intro:
       "We're here to help with sizing, orders, returns or anything else. Our team typically replies within a few hours.",
+    details: [
+      { icon: "💬", label: "WhatsApp", value: "+91 98918 29976", href: "https://wa.me/919891829976" },
+      { icon: "✉️", label: "Email", value: "hello@miyaabi.com", href: "mailto:hello@miyaabi.com" },
+      { icon: "📸", label: "Instagram", value: "@miyaabi", href: "https://instagram.com" },
+      { icon: "🕑", label: "Business Hours", value: "Mon–Sat · 10:00 AM – 7:00 PM IST" },
+    ],
     contact: true,
   },
   "track-order": {

@@ -21,9 +21,20 @@ export interface Product {
   brand: string;
   collectionHandles: string[];
   available: boolean;
+  stock?: number;
+  comingSoon?: boolean;
   badge?: string;
+  tags?: string[];
   featured?: boolean;
   description: string;
+  // spec sheet
+  fabric?: string;
+  gsm?: number;
+  fit?: string;
+  washCare?: string;
+  countryOfOrigin?: string;
+  returnPolicy?: string;
+  shippingTime?: string;
   /** higher = sells better; used by best-selling sort */
   popularity: number;
   /** unix-ish ordering for date sorts */

@@ -118,11 +118,15 @@ export default function CartDrawer() {
                 <span className="text-lg font-extrabold">{formatINR(cartTotal)}</span>
               </div>
               <p className="mb-3 text-[12px] text-ink-soft">
-                Taxes and shipping calculated at checkout.
+                Shipping calculated at checkout · Cash on Delivery available.
               </p>
-              <button className="w-full rounded-full bg-brand py-3.5 text-[13px] font-bold uppercase tracking-wide text-white hover:bg-brand-dark">
+              <Link
+                href="/checkout"
+                onClick={() => setCartOpen(false)}
+                className="block w-full rounded-full bg-brand py-3.5 text-center text-[13px] font-bold uppercase tracking-wide text-white hover:bg-brand-dark"
+              >
                 Checkout
-              </button>
+              </Link>
             </div>
           </>
         )}

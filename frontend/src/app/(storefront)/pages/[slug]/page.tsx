@@ -42,6 +42,33 @@ export default async function StaticInfoPage({
         </div>
       )}
 
+      {content.details && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {content.details.map((d) => {
+            const inner = (
+              <div className="flex items-center gap-3 rounded-xl border border-line p-4">
+                <span className="text-2xl" aria-hidden>
+                  {d.icon}
+                </span>
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-ink-soft">
+                    {d.label}
+                  </p>
+                  <p className="text-sm font-semibold text-ink">{d.value}</p>
+                </div>
+              </div>
+            );
+            return d.href ? (
+              <a key={d.label} href={d.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:border-ink">
+                {inner}
+              </a>
+            ) : (
+              <div key={d.label}>{inner}</div>
+            );
+          })}
+        </div>
+      )}
+
       {content.contact && (
         <div className="mt-2 flex flex-wrap gap-3">
           <a

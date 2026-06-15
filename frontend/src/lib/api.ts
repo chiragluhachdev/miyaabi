@@ -26,9 +26,19 @@ function normProduct(p: Record<string, unknown>): Product {
     brand: (raw.brand as string) || "miyaabi",
     collectionHandles: (raw.collectionHandles as string[]) || [],
     available: raw.available !== false,
+    stock: (raw.stock as number) ?? undefined,
+    comingSoon: Boolean(raw.comingSoon),
     badge: (raw.badge as string) || undefined,
+    tags: (raw.tags as string[]) || [],
     featured: Boolean(raw.featured),
     description: (raw.description as string) || "",
+    fabric: (raw.fabric as string) || "",
+    gsm: (raw.gsm as number) || 0,
+    fit: (raw.fit as string) || "",
+    washCare: (raw.washCare as string) || "",
+    countryOfOrigin: (raw.countryOfOrigin as string) || "",
+    returnPolicy: (raw.returnPolicy as string) || "",
+    shippingTime: (raw.shippingTime as string) || "",
     popularity: (raw.popularity as number) ?? 50,
     createdOrder: (raw.createdOrder as number) ?? 0,
   };
@@ -213,6 +223,54 @@ export async function getBanners(): Promise<Banner[]> {
 export async function getSettings(): Promise<SiteSettings> {
   const data = await apiGet<SiteSettings>(`/settings`);
   return data || DEFAULT_SETTINGS;
+}
+
+export interface OrderInput {
+  items: {
+    handle: string;
+    title: string;
+    image: string;
+    price: number;
+    size: string;
+    color: string;
+    qty: number;
+  }[];
+  customer: {
+    name: string;
+    phone: string;
+    email?: string;
+    address: string;
+    city: string;
+    state: string;
+    pincode: string;
+  };
+  paymentMethod: string;
+}
+
+export interface OrderRecord extends OrderInput {
+  _id: string;
+  subtotal: number;
+  shipping: number;
+  total: number;
+  status: string;
+  createdAt: string;
+}
+
+// Place a Cash-on-Delivery order. Returns the created order (with _id) or throws.
+export async function placeOrder(payload: OrderInput): Promise<OrderRecord> {
+  const res = await fetch(`${API_BASE}/orders`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error((data as { message?: string }).message || "Could not place order");
+  return data as OrderRecord;
+}
+
+// Fetch a single order (public) for confirmation / tracking.
+export async function getOrder(id: string): Promise<OrderRecord | null> {
+  return apiGet<OrderRecord>(`/orders/${id}`);
 }
 
 // Verify the partner passcode; returns the gated content or null if rejected.
