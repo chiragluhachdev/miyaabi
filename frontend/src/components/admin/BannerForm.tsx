@@ -31,7 +31,7 @@ export default function BannerForm({ initial }: { initial?: Banner }) {
     setSaving(true);
     try {
       if (isEdit) {
-        await adminFetch(`/banners/${data._id}`, { method: "PUT", body: data });
+        await adminFetch(`/banners/id/${data._id}`, { method: "PUT", body: data });
       } else {
         await adminFetch("/banners", { method: "POST", body: data });
       }

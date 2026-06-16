@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "./Logo";
 import { useStore } from "@/context/StoreContext";
-import { getProducts } from "@/lib/api";
+import { getProducts } from "@/lib/clientApi";
 import { formatINR } from "@/lib/format";
 import { NavItem, Product, SiteSettings } from "@/data/types";
 import {

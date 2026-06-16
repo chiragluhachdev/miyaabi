@@ -8,12 +8,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
-import {
-  adminFetch,
-  getToken,
-  setToken,
-  clearToken,
-} from "@/lib/adminApi";
+import { adminFetch } from "@/lib/adminApi";
 
 interface Admin {
   id: string;
@@ -36,29 +31,23 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      setReady(true);
-      return;
-    }
+    // The httpOnly cookie isn't readable from JS — ask the server who we are.
     adminFetch<{ admin: Admin }>("/auth/me")
       .then((d) => setAdmin(d.admin))
-      .catch(() => clearToken())
+      .catch(() => setAdmin(null))
       .finally(() => setReady(true));
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const data = await adminFetch<{ token: string; admin: Admin }>("/auth/login", {
+    const data = await adminFetch<{ admin: Admin }>("/auth/login", {
       method: "POST",
-      auth: false,
       body: { email, password },
     });
-    setToken(data.token);
     setAdmin(data.admin);
   }, []);
 
-  const logout = useCallback(() => {
-    clearToken();
+  const logout = useCallback(async () => {
+    await adminFetch("/auth/logout", { method: "POST" }).catch(() => {});
     setAdmin(null);
   }, []);
 

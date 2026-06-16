@@ -85,7 +85,7 @@ export default function ProductForm({ initial }: { initial?: ProductData }) {
     };
     try {
       if (isEdit) {
-        await adminFetch(`/products/${data._id}`, { method: "PUT", body: payload });
+        await adminFetch(`/products/id/${data._id}`, { method: "PUT", body: payload });
       } else {
         await adminFetch("/products", { method: "POST", body: payload });
       }

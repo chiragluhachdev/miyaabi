@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Product } from "@/data/types";
-import { getProducts } from "@/lib/api";
+import { getProducts } from "@/lib/clientApi";
 import { recordView, readRecentlyViewed } from "@/lib/recentlyViewed";
 import ProductCarousel from "./ProductCarousel";
 

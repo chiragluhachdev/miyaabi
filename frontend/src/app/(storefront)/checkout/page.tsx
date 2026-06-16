@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
-import { placeOrder } from "@/lib/api";
+import { placeOrder } from "@/lib/clientApi";
 import { formatINR } from "@/lib/format";
 
 const FREE_SHIP_OVER = 1499;

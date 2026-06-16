@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { getProducts } from "@/lib/api";
+import { getProducts } from "@/lib/clientApi";
 import { Product } from "@/data/types";
 import ProductGrid from "@/components/ProductGrid";
 

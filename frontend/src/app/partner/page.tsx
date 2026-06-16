@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { verifyPartnerAccess } from "@/lib/api";
+import { verifyPartnerAccess } from "@/lib/clientApi";
 import { Partner } from "@/data/types";
 import PartnerGate from "@/components/partner/PartnerGate";
 import ProcessSteps from "@/components/partner/ProcessSteps";

@@ -38,7 +38,7 @@ export default function CollectionForm({ initial }: { initial?: Collection }) {
     };
     try {
       if (isEdit) {
-        await adminFetch(`/collections/${data._id}`, { method: "PUT", body: payload });
+        await adminFetch(`/collections/id/${data._id}`, { method: "PUT", body: payload });
       } else {
         await adminFetch("/collections", { method: "POST", body: payload });
       }
