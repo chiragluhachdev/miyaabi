@@ -66,6 +66,19 @@ export async function placeOrder(payload: OrderInput): Promise<OrderRecord> {
   return data as OrderRecord;
 }
 
+// Look up a single order by id (public) — for order tracking.
+export async function getOrderById(id: string): Promise<OrderRecord | null> {
+  try {
+    const res = await fetch(`/api/orders/${encodeURIComponent(id)}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as OrderRecord;
+  } catch {
+    return null;
+  }
+}
+
 // Verify the partner passcode.
 export async function verifyPartnerAccess(code: string): Promise<Partner | null> {
   try {

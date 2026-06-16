@@ -196,7 +196,10 @@ export async function getSettings(): Promise<SiteSettings> {
 export async function getOrder(id: string): Promise<OrderRecord | null> {
   try {
     const doc = await queryOrderById(id);
-    return (doc as unknown as OrderRecord) || null;
+    if (!doc) return null;
+    // lean() returns Mongo ObjectId/Date — serialize to plain JSON so `_id` is a
+    // string (the page does `_id.slice(...)`) and dates are ISO strings.
+    return JSON.parse(JSON.stringify(doc)) as OrderRecord;
   } catch {
     return null;
   }

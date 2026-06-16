@@ -144,7 +144,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
       {
         heading: "Quick Links",
         links: [
-          { label: "Track Order", href: "/pages/track-order" },
+          { label: "Track Order", href: "/track" },
           { label: "Bulk Enquiry", href: "/pages/bulk-enquiry" },
           { label: "FAQ", href: "/pages/faq" },
           { label: "Contact Us", href: "/pages/contact" },

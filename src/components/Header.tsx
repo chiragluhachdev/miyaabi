@@ -10,7 +10,6 @@ import { formatINR } from "@/lib/format";
 import { NavItem, Product, SiteSettings } from "@/data/types";
 import {
   SearchIcon,
-  UserIcon,
   HeartIcon,
   BagIcon,
   MenuIcon,
@@ -171,8 +170,11 @@ export default function Header({
           >
             <SearchIcon width={22} height={22} />
           </button>
-          <Link href="/account" className="hidden p-2 text-ink hover:text-brand sm:block" aria-label="Account">
-            <UserIcon width={22} height={22} />
+          <Link
+            href="/track"
+            className="hidden px-3 py-2 text-[12px] font-bold uppercase tracking-wide text-ink hover:text-brand sm:block"
+          >
+            Track Order
           </Link>
           <Link href="/wishlist" className="hidden p-2 text-ink hover:text-brand sm:block" aria-label="Wishlist">
             <HeartIcon width={22} height={22} />
@@ -299,6 +301,15 @@ function MobileMenu({
             </div>
           ))}
         </nav>
+        <div className="border-t border-line px-4 py-2">
+          <Link
+            href="/track"
+            onClick={onClose}
+            className="block py-3 text-sm font-bold uppercase tracking-wide text-ink"
+          >
+            Track Order
+          </Link>
+        </div>
       </aside>
     </>
   );

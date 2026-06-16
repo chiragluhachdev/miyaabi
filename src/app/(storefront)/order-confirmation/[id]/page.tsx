@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrder } from "@/lib/api";
 import { formatINR } from "@/lib/format";
+import TrackingId from "@/components/TrackingId";
 
 export const metadata = { title: "Order Confirmed — miyaabi" };
 
@@ -71,9 +72,11 @@ export default async function OrderConfirmationPage({
         </p>
       </div>
 
+      <TrackingId id={order._id} />
+
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link
-          href="/pages/track-order"
+          href="/track"
           className="rounded-full bg-ink px-7 py-3 text-[13px] font-bold uppercase tracking-wide text-white hover:bg-brand"
         >
           Track Order
