@@ -2,12 +2,8 @@
 
 A professional clothing-brand store: customer storefront, a cookie-authed admin
 CMS, and a passcode-gated B2B partner portal — all in **one Next.js app**
-(App Router) backed by MongoDB Atlas + Cloudinary, deployable to Vercel.
-
-```
-Miyaabi/
-  frontend/   The Next.js app — storefront, /admin, /partner, and /api routes
-```
+(App Router) backed by MongoDB Atlas + Cloudinary, deployable to Vercel. The
+Next.js app lives at the repo root (`src/`, `public/`, `package.json`).
 
 - **Storefront:** hero banners, homepage sections, products, collections,
   announcement bar, footer, WhatsApp button — rendered from the DB (server
@@ -19,14 +15,13 @@ Miyaabi/
   direct-to-Cloudinary uploads, and Upstash rate limiting.
 
 > Previously a split Next.js + Express (Render) setup; the Express backend was
-> migrated into the Next.js app. See `MIGRATION.md` for the full record.
+> migrated into the Next.js app and the app was flattened to the repo root.
 
 ---
 
 ## Run locally
 
 ```bash
-cd frontend
 npm install
 cp .env.example .env.local   # then fill in values (see below)
 npm run dev                  # http://localhost:3000
@@ -35,7 +30,7 @@ npm run dev                  # http://localhost:3000
 - Storefront: <http://localhost:3000>
 - Admin: <http://localhost:3000/admin>  (default `admin@miyaabi.com` / `miyaabi@admin123`)
 
-### Environment (`frontend/.env.local`, also set in Vercel)
+### Environment (`.env.local`, also set in Vercel)
 
 | Key | Required | Notes |
 | --- | --- | --- |
@@ -49,7 +44,8 @@ npm run dev                  # http://localhost:3000
 
 ## Deploy (Vercel)
 
-1. Set the project **Root Directory** to `frontend`.
+1. **Root Directory** stays the repo root (default) — the app is no longer nested.
+   If your Vercel project still points at `frontend`, change it back to `./`.
 2. Add the env vars above in Project → Settings → Environment Variables.
 3. Push to the production branch — Vercel builds and serves the storefront, admin,
    partner portal, and `/api` from a single deployment.
