@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Public_Sans, Archivo, Mukta } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
+import { Analytics } from "@vercel/analytics/next";
 
 const publicSans = Public_Sans({
   variable: "--font-public-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white text-ink">
         <StoreProvider>{children}</StoreProvider>
+        <Analytics />
       </body>
     </html>
   );
