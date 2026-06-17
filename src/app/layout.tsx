@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Public_Sans, Archivo, Mukta } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
 
@@ -39,6 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white text-ink">
         <StoreProvider>{children}</StoreProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
